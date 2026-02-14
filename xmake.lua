@@ -1,5 +1,5 @@
 -- set project name
-set_project("PROJECT_NAME")
+set_project("VFileSystem")
 
 -- set project version
 set_version("0.1.0")
@@ -13,16 +13,10 @@ set_config("root", is_root)
 set_config("project_dir", os.scriptdir())
 
 -- global options
-option("PROJECT_NAME_build_examples") -- build examples?
+option("VFileSystem_build_examples") -- build examples?
     set_default(true)
     set_showmenu(true)
-    set_description("Enable PROJECT_NAME examples")
-option_end()
-
-option("PROJECT_NAME_build_tests") -- build tests?
-    set_default(true)
-    set_showmenu(true)
-    set_description("Enable PROJECT_NAME tests")
+    set_description("Enable VFileSystem examples")
 option_end()
 
 -- if build on windows
@@ -57,21 +51,13 @@ add_rules("plugin.vsxmake.autoupdate")
 add_rules("plugin.compile_commands.autoupdate", {outputdir = ".vscode", lsp = "clangd"})
 add_rules("clangd.config")
 
--- add repositories
-add_repositories("my-xmake-repo https://github.com/zzxzzk115/xmake-repo.git backup")
-
 -- include external libraries
 includes("external")
 
 -- include source
 includes("source")
 
--- include tests
-if has_config("PROJECT_NAME_build_tests") then
-    includes("tests")
-end
-
 -- if build examples, then include examples
-if has_config("PROJECT_NAME_build_examples") then
+if has_config("VFileSystem_build_examples") then
     includes("examples")
 end
