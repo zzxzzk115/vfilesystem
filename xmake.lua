@@ -9,8 +9,8 @@ set_languages("cxx23")
 
 -- root ?
 local is_root = (os.projectdir() == os.scriptdir())
-set_config("root", is_root)
-set_config("project_dir", os.scriptdir())
+set_config("vfs_root", is_root)
+set_config("vfs_project_dir", os.scriptdir())
 
 -- global options
 option("VFileSystem_build_examples") -- build examples?
