@@ -2,6 +2,7 @@
 
 #include "vfilesystem/interfaces/ifilesystem.hpp"
 
+#include <string>
 #include <unordered_map>
 #include <vector>
 
