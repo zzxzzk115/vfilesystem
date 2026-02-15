@@ -18,9 +18,9 @@ namespace vfilesystem
         // Mount with optional scheme (empty = default)
         void mount(std::shared_ptr<IFileSystem> backend, std::string scheme = "vfs");
 
-        bool exists(vbase::StringView p) const override;
-        bool isFile(vbase::StringView p) const override;
-        bool isDirectory(vbase::StringView p) const override;
+        bool exists(vbase::StringView uri) const override;
+        bool isFile(vbase::StringView uri) const override;
+        bool isDirectory(vbase::StringView uri) const override;
 
         // URI-based open (vfs://, mem://, disk://)
         vbase::Result<std::unique_ptr<IFile>, FsError> open(vbase::StringView uri, FileMode mode) override;

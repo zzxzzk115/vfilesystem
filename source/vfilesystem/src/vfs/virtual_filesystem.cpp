@@ -60,45 +60,42 @@ namespace vfilesystem
         return mp->fs->open(rel.str(), mode);
     }
 
-    bool VirtualFileSystem::exists(vbase::StringView p) const
+    bool VirtualFileSystem::exists(vbase::StringView uri) const
     {
-        Uri uri;
-        uri.scheme = "";
-        uri.path   = Path(p);
+        Uri uriParsed = parse_uri(uri);
 
         const MountPoint* mp = nullptr;
         Path              rel;
 
-        if (!resolve(uri, mp, rel))
+        if (!resolve(uriParsed, mp, rel))
             return false;
+
         return mp->fs->exists(rel.str());
     }
 
-    bool VirtualFileSystem::isFile(vbase::StringView p) const
+    bool VirtualFileSystem::isFile(vbase::StringView uri) const
     {
-        Uri uri;
-        uri.scheme = "";
-        uri.path   = Path(p);
+        Uri uriParsed = parse_uri(uri);
 
         const MountPoint* mp = nullptr;
         Path              rel;
 
-        if (!resolve(uri, mp, rel))
+        if (!resolve(uriParsed, mp, rel))
             return false;
+
         return mp->fs->isFile(rel.str());
     }
 
-    bool VirtualFileSystem::isDirectory(vbase::StringView p) const
+    bool VirtualFileSystem::isDirectory(vbase::StringView uri) const
     {
-        Uri uri;
-        uri.scheme = "";
-        uri.path   = Path(p);
+        Uri uriParsed = parse_uri(uri);
 
         const MountPoint* mp = nullptr;
         Path              rel;
 
-        if (!resolve(uri, mp, rel))
+        if (!resolve(uriParsed, mp, rel))
             return false;
+
         return mp->fs->isDirectory(rel.str());
     }
 } // namespace vfilesystem

@@ -2,6 +2,7 @@
 
 #include <cstddef>
 #include <cstdint>
+#include <vector>
 
 namespace vfilesystem
 {
@@ -18,5 +19,7 @@ namespace vfilesystem
         virtual uint64_t tell() const          = 0;
 
         virtual uint64_t size() const = 0;
+
+        virtual std::vector<std::byte> readAllBytes() = 0;
     };
 } // namespace vfilesystem

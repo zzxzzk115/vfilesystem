@@ -49,6 +49,21 @@ namespace vfilesystem
             return static_cast<uint64_t>(end);
         }
 
+        std::vector<std::byte> readAllBytes() override
+        {
+            auto                   sz = size();
+            std::vector<std::byte> out;
+            out.resize(static_cast<size_t>(sz));
+            if (sz > 0)
+            {
+                m_F.seekg(0, std::ios::beg);
+                m_F.read(reinterpret_cast<char*>(out.data()), static_cast<std::streamsize>(sz));
+                if (!m_F)
+                    out.clear();
+            }
+            return out;
+        }
+
     private:
         mutable std::fstream m_F;
     };

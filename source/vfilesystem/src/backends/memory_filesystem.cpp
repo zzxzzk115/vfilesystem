@@ -50,6 +50,20 @@ namespace vfilesystem
         uint64_t tell() const override { return static_cast<uint64_t>(m_Cursor); }
         uint64_t size() const override { return static_cast<uint64_t>(m_Buf.size()); }
 
+        std::vector<std::byte> readAllBytes() override
+        {
+            std::vector<std::byte> out;
+            if (m_Mode == FileMode::eWrite || m_Mode == FileMode::eAppend)
+                return out;
+            if (m_Cursor < m_Buf.size())
+            {
+                out.resize(m_Buf.size() - m_Cursor);
+                std::memcpy(out.data(), m_Buf.data() + m_Cursor, out.size());
+                m_Cursor += out.size();
+            }
+            return out;
+        }
+
     private:
         std::vector<std::byte>& m_Buf;
         FileMode                m_Mode {FileMode::eRead};
