@@ -18,6 +18,8 @@ namespace vfilesystem
 
         vbase::Result<std::unique_ptr<IFile>, FsError> open(vbase::StringView p, FileMode mode) override;
 
+        std::string getFullPath(vbase::StringView p) const { return toOSPath(Path {p}); }
+
     private:
         Path        m_Root;
         std::string toOSPath(const Path& p) const;
