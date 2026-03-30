@@ -1,5 +1,9 @@
 target("vfilesystem")
 	set_kind("static")
+	if is_plat("android") then
+		add_cflags("-fPIC")
+		add_cxflags("-fPIC")
+	end
 
 	add_headerfiles("include/(vfilesystem/**.hpp)")
 	add_includedirs("include", {public = true})
