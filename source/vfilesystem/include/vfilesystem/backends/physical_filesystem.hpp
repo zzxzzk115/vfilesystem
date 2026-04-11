@@ -16,6 +16,13 @@ namespace vfilesystem
         bool isFile(vbase::StringView p) const override;
         bool isDirectory(vbase::StringView p) const override;
 
+        vbase::Result<void, FsError> createDirectory(vbase::StringView p) override;
+        vbase::Result<void, FsError> createDirectories(vbase::StringView p) override;
+        vbase::Result<void, FsError> removeFile(vbase::StringView p) override;
+        vbase::Result<void, FsError> removeDirectory(vbase::StringView p, bool recursive) override;
+        vbase::Result<void, FsError> rename(vbase::StringView from, vbase::StringView to) override;
+        vbase::Result<std::vector<DirectoryEntry>, FsError> list(vbase::StringView p) const override;
+
         vbase::Result<std::unique_ptr<IFile>, FsError> open(vbase::StringView p, FileMode mode) override;
 
         std::string getFullPath(vbase::StringView p) const { return toOSPath(Path {p}); }

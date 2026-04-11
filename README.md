@@ -13,9 +13,12 @@ vfilesystem provides:
 
 - `Path` (normalized UTF-8 paths using `/`)
 - `IFile` and `IFileSystem` interfaces
+  - common filesystem operations: `open`, `readAll`, `writeAll`, `createDirectory`, `createDirectories`,
+    `removeFile`, `removeDirectory`, `rename`, `list`
 - Backends:
   - `PhysicalFileSystem` (OS filesystem, rooted)
   - `MemoryFileSystem` (in-memory, for tests/tools)
+  - platform-aware filesystem factory (`makePlatformFileSystem()` for `assets` / `writable` semantics)
 - `VirtualFileSystem` (VFS mount table that composes multiple filesystems)
 
 vfilesystem does **not** provide:
@@ -42,6 +45,28 @@ vfilesystem does not impose a locking strategy.
 ## Examples
 
 See `examples/` for usage samples.
+
+---
+
+## Platform-aware dispatch
+
+`makePlatformFileSystem()` provides a general entry point that dispatches to platform-specific filesystem handling.
+
+- `PlatformFileSystemKind::eAssets`
+  - Desktop platforms: rooted `PhysicalFileSystem(".")`
+  - `WASM` / Emscripten: rooted `PhysicalFileSystem("/")`
+  - `Android`: uses `AAssetManager*` when provided, otherwise requires `rootOverride`
+- `PlatformFileSystemKind::eWritable`
+  - Desktop platforms: rooted `PhysicalFileSystem(".")`
+  - `WASM` / Emscripten: rooted `PhysicalFileSystem("/persistent")`
+  - `Android`: requires `rootOverride` because the writable app sandbox path must come from the host app
+
+Notes:
+
+- `rootOverride` forces a rooted `PhysicalFileSystem` on desktop / `WASM`, and on Android when no `AAssetManager*` is supplied.
+- When `AAssetManager*` is provided on Android, `rootOverride` is treated as an asset subdirectory inside the packaged asset tree.
+- Android asset access is read-only when driven by `AAssetManager`, so mutating operations return `FsError::eNotSupported`.
+- The library does not mount `IDBFS` for `WASM`; it only chooses the conventional writable root. Mounting/syncing remains the host application's responsibility.
 
 ---
 

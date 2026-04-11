@@ -22,6 +22,13 @@ namespace vfilesystem
         bool isFile(vbase::StringView uri) const override;
         bool isDirectory(vbase::StringView uri) const override;
 
+        vbase::Result<void, FsError> createDirectory(vbase::StringView uri) override;
+        vbase::Result<void, FsError> createDirectories(vbase::StringView uri) override;
+        vbase::Result<void, FsError> removeFile(vbase::StringView uri) override;
+        vbase::Result<void, FsError> removeDirectory(vbase::StringView uri, bool recursive) override;
+        vbase::Result<void, FsError> rename(vbase::StringView from, vbase::StringView to) override;
+        vbase::Result<std::vector<DirectoryEntry>, FsError> list(vbase::StringView uri) const override;
+
         // URI-based open (vfs://, mem://, disk://)
         vbase::Result<std::unique_ptr<IFile>, FsError> open(vbase::StringView uri, FileMode mode) override;
 

@@ -3,6 +3,7 @@ target("vfilesystem")
 	if is_plat("android") then
 		add_cflags("-fPIC")
 		add_cxflags("-fPIC")
+		add_syslinks("android")
 	end
 
 	add_headerfiles("include/(vfilesystem/**.hpp)")

@@ -4,18 +4,15 @@
 
 namespace vfilesystem
 {
-    static bool prefix_match(vbase::StringView path, vbase::StringView prefix)
+    namespace
     {
-        if (prefix.empty())
-            return true;
-        if (path.size() < prefix.size())
-            return false;
-        if (path.substr(0, prefix.size()) != prefix)
-            return false;
-        if (path.size() == prefix.size())
-            return true;
-        return path[prefix.size()] == '/';
-    }
+        std::string format_virtual_path(const std::string& scheme, vbase::StringView path)
+        {
+            if (scheme.empty())
+                return std::string(path);
+            return scheme + "://" + std::string(path);
+        }
+    } // namespace
 
     void VirtualFileSystem::mount(std::shared_ptr<IFileSystem> backend, std::string scheme)
     {
@@ -97,5 +94,95 @@ namespace vfilesystem
             return false;
 
         return mp->fs->isDirectory(rel.str());
+    }
+
+    vbase::Result<void, FsError> VirtualFileSystem::createDirectory(vbase::StringView uri)
+    {
+        Uri uriParsed = parse_uri(uri);
+
+        const MountPoint* mp = nullptr;
+        Path              rel;
+
+        if (!resolve(uriParsed, mp, rel))
+            return vbase::Result<void, FsError>::err(FsError::eNotFound);
+
+        return mp->fs->createDirectory(rel.str());
+    }
+
+    vbase::Result<void, FsError> VirtualFileSystem::createDirectories(vbase::StringView uri)
+    {
+        Uri uriParsed = parse_uri(uri);
+
+        const MountPoint* mp = nullptr;
+        Path              rel;
+
+        if (!resolve(uriParsed, mp, rel))
+            return vbase::Result<void, FsError>::err(FsError::eNotFound);
+
+        return mp->fs->createDirectories(rel.str());
+    }
+
+    vbase::Result<void, FsError> VirtualFileSystem::removeFile(vbase::StringView uri)
+    {
+        Uri uriParsed = parse_uri(uri);
+
+        const MountPoint* mp = nullptr;
+        Path              rel;
+
+        if (!resolve(uriParsed, mp, rel))
+            return vbase::Result<void, FsError>::err(FsError::eNotFound);
+
+        return mp->fs->removeFile(rel.str());
+    }
+
+    vbase::Result<void, FsError> VirtualFileSystem::removeDirectory(vbase::StringView uri, bool recursive)
+    {
+        Uri uriParsed = parse_uri(uri);
+
+        const MountPoint* mp = nullptr;
+        Path              rel;
+
+        if (!resolve(uriParsed, mp, rel))
+            return vbase::Result<void, FsError>::err(FsError::eNotFound);
+
+        return mp->fs->removeDirectory(rel.str(), recursive);
+    }
+
+    vbase::Result<void, FsError> VirtualFileSystem::rename(vbase::StringView from, vbase::StringView to)
+    {
+        const Uri fromUri = parse_uri(from);
+        const Uri toUri   = parse_uri(to);
+
+        const MountPoint* fromMp = nullptr;
+        const MountPoint* toMp   = nullptr;
+        Path              fromRel;
+        Path              toRel;
+
+        if (!resolve(fromUri, fromMp, fromRel) || !resolve(toUri, toMp, toRel))
+            return vbase::Result<void, FsError>::err(FsError::eNotFound);
+        if (fromMp->fs.get() != toMp->fs.get())
+            return vbase::Result<void, FsError>::err(FsError::eNotSupported);
+
+        return fromMp->fs->rename(fromRel.str(), toRel.str());
+    }
+
+    vbase::Result<std::vector<DirectoryEntry>, FsError> VirtualFileSystem::list(vbase::StringView uri) const
+    {
+        Uri uriParsed = parse_uri(uri);
+
+        const MountPoint* mp = nullptr;
+        Path              rel;
+
+        if (!resolve(uriParsed, mp, rel))
+            return vbase::Result<std::vector<DirectoryEntry>, FsError>::err(FsError::eNotFound);
+
+        auto entries = mp->fs->list(rel.str());
+        if (!entries)
+            return entries;
+
+        for (auto& entry : entries.value())
+            entry.path = format_virtual_path(uriParsed.scheme, entry.path);
+
+        return entries;
     }
 } // namespace vfilesystem

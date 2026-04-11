@@ -12,3 +12,4 @@ end
 add_example("vfilesystem_example_01_physical_read", "01_physical_read/main.cpp")
 add_example("vfilesystem_example_02_vfs_mount", "02_vfs_mount/main.cpp")
 add_example("vfilesystem_example_03_memory_fs", "03_memory_fs/main.cpp")
+add_example("vfilesystem_example_04_platform_fs", "04_platform_fs/main.cpp")

@@ -12,6 +12,7 @@ namespace vfilesystem
         eInvalidPath,
         eIOError,
         eAlreadyExists,
+        eDirectoryNotEmpty,
         eNotSupported,
     };
 } // namespace vfilesystem

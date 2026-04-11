@@ -9,10 +9,20 @@
 #include <vbase/core/string_view.hpp>
 
 #include <memory>
+#include <string>
 #include <vector>
 
 namespace vfilesystem
 {
+    struct DirectoryEntry
+    {
+        std::string name;
+        std::string path;
+        bool        isFile {false};
+        bool        isDirectory {false};
+        uint64_t    size {0};
+    };
+
     // Thread-compatible: no internal locking policy.
     class IFileSystem
     {
@@ -22,6 +32,13 @@ namespace vfilesystem
         virtual bool exists(vbase::StringView p) const      = 0;
         virtual bool isFile(vbase::StringView p) const      = 0;
         virtual bool isDirectory(vbase::StringView p) const = 0;
+
+        virtual vbase::Result<void, FsError> createDirectory(vbase::StringView p)                 = 0;
+        virtual vbase::Result<void, FsError> createDirectories(vbase::StringView p)               = 0;
+        virtual vbase::Result<void, FsError> removeFile(vbase::StringView p)                      = 0;
+        virtual vbase::Result<void, FsError> removeDirectory(vbase::StringView p, bool recursive) = 0;
+        virtual vbase::Result<void, FsError> rename(vbase::StringView from, vbase::StringView to) = 0;
+        virtual vbase::Result<std::vector<DirectoryEntry>, FsError> list(vbase::StringView p) const = 0;
 
         virtual vbase::Result<std::unique_ptr<IFile>, FsError> open(vbase::StringView p, FileMode mode) = 0;
 
