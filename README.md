@@ -1,5 +1,18 @@
 # vfilesystem
 
+<p align="center">
+    <a href="https://github.com/zzxzzk115/vfilesystem/actions" alt="Build-Windows">
+        <img src="https://img.shields.io/github/actions/workflow/status/zzxzzk115/vfilesystem/build_windows.yaml?branch=master&label=Build-Windows&logo=github" /></a>
+    <a href="https://github.com/zzxzzk115/vfilesystem/actions" alt="Build-Linux">
+        <img src="https://img.shields.io/github/actions/workflow/status/zzxzzk115/vfilesystem/build_linux.yaml?branch=master&label=Build-Linux&logo=github" /></a>
+    <a href="https://github.com/zzxzzk115/vfilesystem/actions" alt="Build-macOS">
+        <img src="https://img.shields.io/github/actions/workflow/status/zzxzzk115/vfilesystem/build_macos.yaml?branch=master&label=Build-macOS&logo=github" /></a>
+    <a href="https://github.com/zzxzzk115/vfilesystem/actions" alt="Build-Android">
+        <img src="https://img.shields.io/github/actions/workflow/status/zzxzzk115/vfilesystem/build_android.yaml?branch=master&label=Build-Android&logo=github" /></a>
+    <a href="https://github.com/zzxzzk115/vfilesystem/actions" alt="Build-WASM">
+        <img src="https://img.shields.io/github/actions/workflow/status/zzxzzk115/vfilesystem/build_wasm.yaml?branch=master&label=Build-WASM&logo=github" /></a>
+</p>
+
 **vfilesystem** is a lightweight, composable filesystem abstraction layer for the Vultra ecosystem.
 
 It provides standardised IO primitives (path, file, filesystem interfaces) and a virtual filesystem

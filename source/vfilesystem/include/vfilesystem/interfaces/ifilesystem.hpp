@@ -33,12 +33,35 @@ namespace vfilesystem
         virtual bool isFile(vbase::StringView p) const      = 0;
         virtual bool isDirectory(vbase::StringView p) const = 0;
 
-        virtual vbase::Result<void, FsError> createDirectory(vbase::StringView p)                 = 0;
-        virtual vbase::Result<void, FsError> createDirectories(vbase::StringView p)               = 0;
-        virtual vbase::Result<void, FsError> removeFile(vbase::StringView p)                      = 0;
-        virtual vbase::Result<void, FsError> removeDirectory(vbase::StringView p, bool recursive) = 0;
-        virtual vbase::Result<void, FsError> rename(vbase::StringView from, vbase::StringView to) = 0;
-        virtual vbase::Result<std::vector<DirectoryEntry>, FsError> list(vbase::StringView p) const = 0;
+        virtual vbase::Result<void, FsError> createDirectory(vbase::StringView)
+        {
+            return vbase::Result<void, FsError>::err(FsError::eNotSupported);
+        }
+
+        virtual vbase::Result<void, FsError> createDirectories(vbase::StringView)
+        {
+            return vbase::Result<void, FsError>::err(FsError::eNotSupported);
+        }
+
+        virtual vbase::Result<void, FsError> removeFile(vbase::StringView)
+        {
+            return vbase::Result<void, FsError>::err(FsError::eNotSupported);
+        }
+
+        virtual vbase::Result<void, FsError> removeDirectory(vbase::StringView, bool)
+        {
+            return vbase::Result<void, FsError>::err(FsError::eNotSupported);
+        }
+
+        virtual vbase::Result<void, FsError> rename(vbase::StringView, vbase::StringView)
+        {
+            return vbase::Result<void, FsError>::err(FsError::eNotSupported);
+        }
+
+        virtual vbase::Result<std::vector<DirectoryEntry>, FsError> list(vbase::StringView) const
+        {
+            return vbase::Result<std::vector<DirectoryEntry>, FsError>::err(FsError::eNotSupported);
+        }
 
         virtual vbase::Result<std::unique_ptr<IFile>, FsError> open(vbase::StringView p, FileMode mode) = 0;
 
