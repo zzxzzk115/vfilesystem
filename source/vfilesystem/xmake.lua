@@ -11,7 +11,7 @@ target("vfilesystem")
 
 	add_files("src/**.cpp")
 
-	add_deps("vbase", {public = true})
+	add_deps("vtask", {public = true})
 
 	-- set target directory
     set_targetdir("$(builddir)/$(plat)/$(arch)/$(mode)/vfilesystem")
