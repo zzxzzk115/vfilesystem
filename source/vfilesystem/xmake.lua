@@ -1,3 +1,5 @@
+add_requires("vtask")
+
 target("vfilesystem")
 	set_kind("static")
 	if is_plat("android") then
@@ -11,7 +13,7 @@ target("vfilesystem")
 
 	add_files("src/**.cpp")
 
-	add_deps("vtask", {public = true})
+	add_packages("vtask", {public = true}) -- consumed from xmake-repo (was add_deps in workspace builds)
 
 	-- set target directory
     set_targetdir("$(builddir)/$(plat)/$(arch)/$(mode)/vfilesystem")
